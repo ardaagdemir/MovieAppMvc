@@ -19,20 +19,20 @@ public class UserController {
 
     //GetMapping, PostMapping
     @GetMapping("/register")
-    public ModelAndView getRegisterPage(){
+    public ModelAndView getRegisterPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("register");
         return modelAndView;
     }
 
     @PostMapping("/register")
-    public ModelAndView register(UserRegisterRequestDto dto){
+    public ModelAndView register(UserRegisterRequestDto dto) {
         ModelAndView modelAndView = new ModelAndView();
-        try{
+        try {
             userService.registerMapper(dto);
             //modelAndView.addObject("email", dto.getEmail());
             modelAndView.setViewName("redirect:login");
-        }catch (Exception e){
+        } catch (Exception e) {
             modelAndView.addObject("error", e.getMessage());
             modelAndView.setViewName("register");
         }
@@ -40,21 +40,21 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public ModelAndView getLoginPage(String email){
+    public ModelAndView getLoginPage(String email) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("email",email);
+        modelAndView.addObject("email", email);
         modelAndView.setViewName("login");
         return modelAndView;
     }
 
     @PostMapping("/login")
-    public ModelAndView login(UserLoginResponseDto dto){
+    public ModelAndView login(UserLoginResponseDto dto) {
         ModelAndView modelAndView = new ModelAndView();
         try {
-            userService.loginMapper(dto);
-            modelAndView.addObject("userId", dto.getId());
+            UserLoginResponseDto responseDto = userService.loginMapper(dto);
+            modelAndView.addObject("userId", responseDto.getId());
             modelAndView.setViewName("redirect:/movies/find-all");
-        }catch (Exception e){
+        } catch (Exception e) {
             modelAndView.addObject("error", e.getMessage());
             modelAndView.setViewName("login");
         }

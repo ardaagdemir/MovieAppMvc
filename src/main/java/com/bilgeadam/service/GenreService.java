@@ -1,5 +1,6 @@
 package com.bilgeadam.service;
 
+import com.bilgeadam.dto.response.AllGenresResponseDto;
 import com.bilgeadam.entity.Genre;
 import com.bilgeadam.repository.IGenreRepository;
 import com.bilgeadam.utility.ICrudService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,16 +49,14 @@ public class GenreService implements ICrudService<Genre, Integer> {
     }
 
     //DataImpl için gelen String genre değerinin Integer' a dönüştürülmesi
-    public List<Integer> createGenresWithNames(List<String> genres){
-        List<Integer> genreList = new ArrayList<>();
-        for(String name : genres){
-            Optional<Genre> genre = genreRepository.findOptionalByName(name);
+    public List<Integer> createGenresWithNames(List<String> genres) { //Drama Anime Action
+        List<Integer> genreList=new ArrayList<>();
+        for (String name:genres){
+            Optional<Genre> genre=genreRepository.findOptionalByName(name);
             if (genre.isPresent()){
                 genreList.add(genre.get().getId());
-            }else {
-                Genre myGenre = Genre.builder()
-                        .name(name)
-                        .build();
+            }else{
+                Genre myGenre= Genre.builder().name(name).build();
                 save(myGenre);
                 genreList.add(myGenre.getId());
             }
@@ -64,9 +64,7 @@ public class GenreService implements ICrudService<Genre, Integer> {
         return genreList;
     }
 
-
-
-
-
-
+    public String getGenreName(Integer id){
+        return findById(id).get().getName();
+    }
 }

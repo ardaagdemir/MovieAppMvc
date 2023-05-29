@@ -1,5 +1,6 @@
 package com.bilgeadam.mapper;
 
+import com.bilgeadam.dto.request.MovieCommentCreateRequestDto;
 import com.bilgeadam.dto.request.UserRegisterRequestDto;
 import com.bilgeadam.dto.request.UserUpdateRequestDto;
 import com.bilgeadam.dto.response.UserLoginResponseDto;
@@ -21,4 +22,5 @@ public interface IUserMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserFromDto(UserUpdateRequestDto dto, @MappingTarget User user);
 
+    Comment toMovieComment(final MovieCommentCreateRequestDto dto);
 }

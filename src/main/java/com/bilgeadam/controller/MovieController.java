@@ -2,6 +2,7 @@ package com.bilgeadam.controller;
 
 import com.bilgeadam.entity.Movie;
 import com.bilgeadam.entity.User;
+import com.bilgeadam.exception.MovieExceptionHandler;
 import com.bilgeadam.service.CommentService;
 import com.bilgeadam.service.GenreService;
 import com.bilgeadam.service.MovieService;
@@ -28,12 +29,13 @@ public class MovieController {
 
 
     @GetMapping("/find-all")
-    public ModelAndView getMoviePage(Integer userId){
+    public ModelAndView getMoviePage(Integer userId) {
+        User user;
         ModelAndView modelAndView = new ModelAndView();
-        if (userId == null){
+        if (userId == null) {
             modelAndView.addObject("user", null);
-        }else {
-            User user = userService.findById(userId).get();
+        } else {
+            user = userService.findById(userId).get();
             modelAndView.addObject("user", user);
         }
 
@@ -41,6 +43,30 @@ public class MovieController {
         modelAndView.addObject("movies", movies);
         modelAndView.addObject("genreservice", genreService);
         modelAndView.setViewName("movies");
+        return modelAndView;
+    }
+
+    @GetMapping("/find-by-id/{id}")
+    public ModelAndView getMovieById(@PathVariable Integer id, @RequestParam(required = false) Integer userId) {
+        ModelAndView modelAndView = new ModelAndView();
+        User user;
+        if (userId == null) {
+            modelAndView.addObject("user", null);
+        } else {
+            user = userService.findById(userId).get();
+            modelAndView.addObject("user", user);
+        }
+
+        Optional<Movie> movie = movieService.findById(id);
+        if (movie.isPresent()) {
+            modelAndView.addObject("movie", movie.get());
+            modelAndView.addObject("genreservice", genreService);
+            modelAndView.addObject("commentservice", commentService);
+            modelAndView.addObject("userservice", userService);
+            modelAndView.setViewName("moviesDetail");
+        } else {
+            throw new RuntimeException("Hata");
+        }
         return modelAndView;
     }
 }

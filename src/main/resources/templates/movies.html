@@ -15,10 +15,7 @@
 <body>
 <nav class="navbar navbar-expand-md bg-body-secondary bg-gradient mb-4 ">
     <div class="container d-flex ">
-        <a class="navbar-brand" href="/movies/find-all">Movie
-            App</a>
-
-
+        <a class="navbar-brand" href="#">Movie App</a>
         <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
                 class="navbar-toggler" data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"></span>
@@ -30,14 +27,17 @@
                 <button class="btn btn-outline-success" type="button">Search</button>
             </div>
             <ul class="navbar-nav d-flex align-items-center ">
+                <li class="nav-item">
+                    <a aria-current="page" class="nav-link active" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
                 <li  th:if="${user!=null}"  class="nav-item dropdown">
                     <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
                        role="button">
                         <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
-                             height="25" alt="Black and White Portrait of a Man" loading="lazy" />
-                    </a>
-                    </a>
-
+                             height="25" alt="Black and White Portrait of a Man" loading="lazy" /></a>
                     <ul class="dropdown-menu text-center">
                         <li><a th:text="${user.name}"  class="dropdown-item" href="#"></a></li>
                         <li><a th:text="${user.userType}"  class="dropdown-item" href="#"></a></li>
@@ -45,12 +45,10 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li ><a class="dropdown-item" href="#">Something else here</a></li>
-                        <a th:href="${'/user/login'}"  class="btn btn-danger" >Logout</a>
+                        <a th:href="${'http://localhost:8090/user/login'}"  class="btn btn-danger" >Logout</a>
                     </ul>
                 </li>
-                <a th:href="${'/user/login'}" th:if="${user==null}" class="btn btn-success mx-3 my-1" >Login</a>
-
-
+                <a th:href="${'user/login'}" th:if="${user==null}" class="btn btn-success mx-3 my-1" >Login</a>
             </ul>
         </div>
 
@@ -84,10 +82,7 @@
         </div>
     </div>
     <div class="col-sm-7  col-md-9  allfilm  d-flex  flex-wrap justify-content-center ">
-
         <div th:each="movie:${movies}" class="card my-2 mx-2" style="width:20rem;">
-
-
             <a th:if="${user==null}" th:href="${'/movies/find-by-id/'+movie.id}" class="cm" >
                 <img   th:src="${movie.image}" class="card-img-top" th:alt="${movie.name+'_image'}">
                 <div class="card-body sum d-flex flex-column">
@@ -102,7 +97,6 @@
                     <p  th:utext="${movie.summary}"></p>
                 </div>
             </a>
-
             <ul class="list-group list-group-flush">
                 <li th:text="${'Language: '+movie.language}"  class="list-group-item"></li>
                 <li th:text="${'Rating: '+movie.rating}" class="list-group-item"></li>
@@ -110,7 +104,7 @@
                 <li th:text="${'Country: '+movie?.country}" class="list-group-item"></li>
                 <div class="d-flex justify-content-around my-2">
                     <li th:each="genreId:${movie.genreId}" class="list-group-item badge rounded-pill text-bg-primary">
-                        <span th:text="${genreservice.createGenresWithNames(genreId)}" ></span>
+                        <span th:text="${genreservice.getGenreName(genreId)}" ></span>
                     </li>
                 </div>
             </ul>
